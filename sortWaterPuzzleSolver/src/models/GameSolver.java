@@ -37,26 +37,29 @@ public class GameSolver {
 
     public void solvePuzzle() {
         System.out.println("Initial state:" + this);
+        if (isSolved()) {
+            System.out.println("Game is already solved");
+            return;
+        }
 
-        Set<String> visited = new LinkedHashSet<>();
-        Move nextMove = canSolve(null, visited, 0);
+        Set<String> visitedStates = new LinkedHashSet<>();
+        Move moveForSolution = canSolve(null, visitedStates, 0);
 
-        if (nextMove != null || isSolved()) {
-            System.out.print("Found solution: ");
+        if (moveForSolution != null) {
             List<Move> movesHistory = new ArrayList<>();
 
-            while (nextMove != null) {
-                movesHistory.add(nextMove);
-                nextMove = nextMove.getParent();
+            while (moveForSolution != null) {
+                movesHistory.add(moveForSolution);
+                moveForSolution = moveForSolution.getParent();
             }
 
-            System.out.println("Need " + movesHistory.size() + " moves");
+            System.out.println("Found solution in " + movesHistory.size() + " moves");
             for (int i = movesHistory.size() - 1; i >= 0; --i) {
                 System.out.println(movesHistory.get(i) + " ");
             }
             System.out.println("Final state:" + this);
         } else {
-            System.out.println("No solution found!");
+            System.out.println("No solutions");
         }
     }
 

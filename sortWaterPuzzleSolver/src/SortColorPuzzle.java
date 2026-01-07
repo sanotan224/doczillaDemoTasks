@@ -22,7 +22,7 @@ public class SortColorPuzzle {
         ));
     }
 
-    private static void run(GameSolver game) {
-        game.solvePuzzle();
+    private static void run(GameSolver gameSolver) {
+        gameSolver.solvePuzzle();
     }
 }

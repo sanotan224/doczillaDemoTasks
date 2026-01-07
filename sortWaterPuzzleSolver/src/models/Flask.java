@@ -30,7 +30,6 @@ public class Flask {
                 return false;
             }
         }
-
         return this.isFull();
     }
 
@@ -56,14 +55,14 @@ public class Flask {
 
     public void fill(Drop drop) {
         if (this.isFull()) {
-            throw new RuntimeException("models.Flask is full");
+            throw new RuntimeException("Flask is full");
         }
         drops.add(drop);
     }
 
     public Drop pollLast() {
         if (this.isEmpty()) {
-            throw new RuntimeException("models.Flask is empty");
+            throw new RuntimeException("Flask is empty");
         }
         return this.drops.remove(this.drops.size() - 1);
     }
