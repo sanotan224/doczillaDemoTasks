@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Sharing Service</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>File Sharing Service</h1>
+        <div class="auth-section">
+            <div id="login-form" class="hidden">
+                <div class="auth-inputs mb-10">
+                    <input type="text" id="username" placeholder="Username" required>
+                    <input type="password" id="password" placeholder="Password" required>
+                </div>
+                <div class="auth-buttons">
+                    <button onclick="login()">Login</button>
+                    <button onclick="showRegister()">Register</button>
+                </div>
+            </div>
+            <div id="register-form" class="hidden">
+                <div class="auth-inputs mb-10">
+                    <input type="text" id="reg-username" placeholder="Username">
+                    <input type="password" id="reg-password" placeholder="Password">
+                </div>
+                <div class="auth-buttons">
+                    <button onclick="register()">Register</button>
+                    <button onclick="showLogin()">Back to Login</button>
+                </div>
+            </div>
+            <div id="user-info" class="hidden">
+                <span id="user-username"></span>
+                <button onclick="logout()">Logout</button>
+                <button onclick="showStats()">Stats</button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div id="upload-section" class="hidden">
+            <div class="upload-area" id="drop-area">
+                <input type="file" id="file-input" class="hidden">
+                <div class="upload-text">
+                    <button onclick="document.getElementById('file-input').click()">
+                        Browse Files
+                    </button>
+                </div>
+                <div class="file-info" id="file-info"></div>
+            </div>
+
+            <div class="progress-container hidden" id="progress-container">
+                <div class="progress-bar" id="progress-bar"></div>
+                <span id="progress-text">0%</span>
+            </div>
+
+            <button id="upload-btn" class="hidden" onclick="uploadFile()">
+                Upload File
+            </button>
+
+            <div class="result hidden" id="result">
+                <h3>Uploaded</h3>
+                <p>Your file has been uploaded</p>
+                <div class="link-container">
+                    <input type="text" id="download-link" readonly>
+                    <button onclick="copyLink()">Copy</button>
+                </div>
+                <p class="expiry">Link expires in 30 days</p>
+            </div>
+        </div>
+
+        <div id="stats-section" class="hidden">
+            <h2>Statistics</h2>
+            <div class="stats-grid" id="stats-container"></div>
+            <button onclick="showUpload()" class="back-btn">Back to Upload</button>
+        </div>
+    </main>
+</div>
+
+<script src="auth.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
