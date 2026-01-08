@@ -1,5 +1,8 @@
 package models;
 
+import exceptions.AddToFullFlaskException;
+import exceptions.TakeFromEmptyFlaskException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,14 +58,16 @@ public class Flask {
 
     public void fill(Drop drop) {
         if (this.isFull()) {
-            throw new RuntimeException("Flask is full");
+            throw new AddToFullFlaskException(String.format(
+                    "Failed to add drop to flask. Current size: %d, capacity: %d",
+                    drops.size(), this.maxDropSize));
         }
         drops.add(drop);
     }
 
     public Drop pollLast() {
         if (this.isEmpty()) {
-            throw new RuntimeException("Flask is empty");
+            throw new TakeFromEmptyFlaskException("Cannot take a drop: flask is empty");
         }
         return this.drops.remove(this.drops.size() - 1);
     }

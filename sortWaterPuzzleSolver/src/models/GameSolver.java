@@ -1,5 +1,7 @@
 package models;
 
+import exceptions.WrongCapacityValueException;
+
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -12,7 +14,10 @@ public class GameSolver {
 
     public GameSolver(Object[][] flasks, int capacity) {
         if (capacity <= 0) {
-            throw new RuntimeException("Capacity should be greater than 0");
+            throw new WrongCapacityValueException(String.format(
+                    "Capacity should be greater than 0. Provided capacity is %d",
+                    capacity)
+            );
         }
         this.flasks = new ArrayList<>();
 
@@ -27,7 +32,10 @@ public class GameSolver {
                     drop = new Drop(new Color(color.toString()));
                 }
                 else {
-                    throw new RuntimeException("Wrong models.Color instance");
+                    throw new IllegalArgumentException(String.format(
+                            "Invalid color type: %s. Expected Integer, String or Character, got: %s",
+                            color, color.getClass().getSimpleName())
+                    );
                 }
                 fillingFlask.fillDropForInitialGameState(drop);
             }
