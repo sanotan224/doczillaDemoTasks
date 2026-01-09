@@ -1,4 +1,4 @@
-export interface CityCoordinates {
+export interface ICityCoordinates {
     name: string;
     latitude: number;
     longitude: number;

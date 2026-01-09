@@ -1,11 +1,22 @@
 import { Router } from 'express';
 import {WeatherController} from "../controllers/weatherController";
 
-const router = Router();
+export class WeatherRoutes {
+    private readonly router: Router;
+    private weatherController: WeatherController;
 
-const weatherController = new WeatherController();
+    constructor() {
+        this.router = Router();
+        this.weatherController = new WeatherController();
+        this.initializeRoutes();
+    }
 
-router.get('/data', (req, res) => weatherController.getWeather(req, res));
-router.get('/chart', (req, res) => weatherController.getWeatherChart(req, res));
+    public getRouter(): Router {
+        return this.router;
+    }
 
-export default router;
+    private initializeRoutes(): void {
+        this.router.get('/data', this.weatherController.getWeather);
+        this.router.get('/chart', this.weatherController.getWeatherChart);
+    }
+}

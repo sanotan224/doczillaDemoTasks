@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { WeatherService } from '../services/weatherService';
 import { ChartGenerator } from '../utils/chartGenerator';
+import {IWeatherLocationData} from "../types/weatherCityData";
 
 export class WeatherController {
     private weatherService: WeatherService;
@@ -9,9 +10,13 @@ export class WeatherController {
     constructor() {
         this.weatherService = new WeatherService();
         this.chartGenerator = new ChartGenerator();
+
+        this.getWeather = this.getWeather.bind(this);
+        this.getWeatherChart = this.getWeatherChart.bind(this);
+        this.getWeatherData = this.getWeatherData.bind(this);
     }
 
-    async getWeather(req: Request, res: Response): Promise<void> {
+    public getWeather = async(req: Request, res: Response): Promise<void> => {
         try {
             const weatherData = await this.getWeatherData(req.query?.city as string);
 
@@ -28,7 +33,7 @@ export class WeatherController {
         }
     }
 
-    async getWeatherChart(req: Request, res: Response): Promise<void> {
+    public getWeatherChart = async(req: Request, res: Response): Promise<void> => {
         try {
             const weatherData = await this.getWeatherData(req.query?.city as string);
 
@@ -51,7 +56,7 @@ export class WeatherController {
         }
     }
 
-    private async getWeatherData(city: string) {
+    private readonly getWeatherData = async(city: string): Promise<IWeatherLocationData> => {
         if (!city) {
             throw new Error('City parameter is not provided');
         }

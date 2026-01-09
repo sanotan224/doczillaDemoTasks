@@ -1,4 +1,4 @@
-export interface WeatherData {
+export interface IWeatherApiData {
     locationName: string;
     latitude: number;
     longitude: number;

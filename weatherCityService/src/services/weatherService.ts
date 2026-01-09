@@ -1,13 +1,8 @@
 import axios from 'axios';
 import { CacheService } from './cacheService';
-import {CityCoordinates} from "../types/cityCoordinates";
-import {WeatherData} from "../types/weatherData";
-import {ForecastData} from "../types/forecastData";
-
-export type WeatherCityData = {
-    locationName: string;
-    forecast: ForecastData[];
-}
+import {ICityCoordinates} from "../types/cityCoordinates";
+import {IWeatherApiData} from "../types/weatherApiData";
+import {IWeatherLocationData} from "../types/weatherCityData";
 
 export class WeatherService {
     private cacheService: CacheService;
@@ -18,7 +13,7 @@ export class WeatherService {
         this.cacheService = new CacheService();
     }
 
-    async getCityCoordinates(city: string): Promise<CityCoordinates> {
+    async getCityCoordinates(city: string): Promise<ICityCoordinates> {
         try {
             const response = await axios.get(this.GEOCODING_API, {
                 params: { name: city }
@@ -39,9 +34,9 @@ export class WeatherService {
         }
     }
 
-    async getWeatherForecast(city: string): Promise<WeatherData> {
+    async getWeatherForecast(city: string): Promise<IWeatherApiData> {
         const cacheKey = `weather:${city.toLowerCase()}`;
-        const cachedData = await this.cacheService.get<WeatherData>(cacheKey);
+        const cachedData = await this.cacheService.get<IWeatherApiData>(cacheKey);
 
         if (cachedData) {
             console.log(`Returning cached data for ${city}`);
@@ -59,7 +54,7 @@ export class WeatherService {
                 hourly: 'temperature_2m',
             }
         });
-        const weatherData: WeatherData = {
+        const weatherData: IWeatherApiData = {
             locationName: coordinates.name,
             latitude: coordinates.latitude,
             longitude: coordinates.longitude,
@@ -70,7 +65,7 @@ export class WeatherService {
         return weatherData;
     }
 
-    async getCurrentWeather(city: string): Promise<WeatherCityData> {
+    async getCurrentWeather(city: string): Promise<IWeatherLocationData> {
         const weatherData = await this.getWeatherForecast(city);
         const forecast = weatherData.hourly.time.slice(0, 24).map((time, index) => ({
             time: new Date(time).toLocaleTimeString('ru-RU', {
