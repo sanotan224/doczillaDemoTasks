@@ -1,8 +1,9 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import {IUserModel} from "../models/IUserModel";
 
-const users = new Map<string, UserModel>();
+const users = new Map<string, IUserModel>();
 
 export const register = async (req: Request, res: Response) => {
     try {
