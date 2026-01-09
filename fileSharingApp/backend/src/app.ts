@@ -1,8 +1,8 @@
 import express, {Application} from 'express';
 import cors from 'cors';
-import fileRoutes from './routes/fileRoutes';
-import authRoutes from './routes/authRoutes';
-import statsRoutes from './routes/statsRoutes';
+import {FileRoutes} from './routes/fileRoutes';
+import {StatsRoute} from './routes/statsRoutes';
+import {AuthRoutes} from "./routes/authRoutes";
 import {CleanupService} from './services/cleanupService';
 
 export class App {
@@ -25,9 +25,9 @@ export class App {
     }
 
     private initializeRoutes(): void {
-        this.app.use('/api/auth', authRoutes);
-        this.app.use('/api/files', fileRoutes);
-        this.app.use('/api/stats', statsRoutes);
+        this.app.use('/api/auth', new AuthRoutes().getRouter());
+        this.app.use('/api/files', new FileRoutes().getRouter());
+        this.app.use('/api/stats', new StatsRoute().getRouter());
     }
 
     public async start(): Promise<void> {

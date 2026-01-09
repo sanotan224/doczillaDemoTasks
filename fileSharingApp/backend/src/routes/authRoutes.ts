@@ -1,9 +1,22 @@
-import { Router } from 'express';
-import { register, login } from '../controllers/authController';
+import {Router} from "express";
+import {AuthController} from "../controllers/authController";
 
-const router = Router();
+export class AuthRoutes {
+    private readonly router: Router;
+    private authController: AuthController;
 
-router.post('/register', register);
-router.post('/login', login);
+    constructor() {
+        this.router = Router();
+        this.authController = new AuthController();
+        this.initializeRoutes();
+    }
 
-export default router;
+    public getRouter(): Router {
+        return this.router;
+    }
+
+    private initializeRoutes(): void {
+        this.router.post('/register', this.authController.register);
+        this.router.post('/login', this.authController.login);
+    }
+}

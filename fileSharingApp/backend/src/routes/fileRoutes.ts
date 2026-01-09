@@ -1,11 +1,26 @@
 import { Router } from 'express';
-import { uploadFile, downloadFile} from '../controllers/fileController';
-import { authenticate } from '../middleware/auth';
+import { FileController } from '../controllers/fileController';
 import { upload } from '../middleware/upload';
+import {MiddlewareAuth} from "../middleware/auth";
 
-const router = Router();
+export class FileRoutes {
+    private readonly router: Router;
+    private fileController: FileController;
+    private auth: MiddlewareAuth;
 
-router.post('/upload', authenticate, upload.single('file'), uploadFile);
-router.get('/download/:id', downloadFile);
+    constructor() {
+        this.router = Router();
+        this.fileController = new FileController();
+        this.auth = new MiddlewareAuth();
+        this.initializeRoutes();
+    }
 
-export default router;
+    public getRouter(): Router {
+        return this.router;
+    }
+
+    private initializeRoutes(): void {
+        this.router.post('/upload', this.auth.authenticate, upload.single('file'), this.fileController.uploadFile);
+        this.router.get('/download/:id', this.fileController.downloadFile);
+    }
+}

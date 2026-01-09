@@ -1,10 +1,10 @@
 import { v4 as uuidv4 } from 'uuid';
 import path from 'path';
 import fs from 'fs-extra';
-import {FileMetadata} from "./fileMetadata";
+import {IFileMetadata} from "../models/fileMetadata";
 
-export class FileModel {
-    private static files: Map<string, FileMetadata> = new Map();
+export class FileStorageService {
+    private static files: Map<string, IFileMetadata> = new Map();
     private static uploadsDir = path.join(__dirname, '../../uploads/')
     private static metadataPath = this.uploadsDir + 'metadata.json';
 
@@ -19,9 +19,9 @@ export class FileModel {
         }
     }
 
-    static create(metadata: Omit<FileMetadata, 'id' | 'lastDownloadDate' | 'downloadCount'>): FileMetadata {
+    static create(metadata: Omit<IFileMetadata, 'id' | 'downloadCount'>): IFileMetadata {
         const id = uuidv4();
-        const fileMetadata: FileMetadata = {
+        const fileMetadata: IFileMetadata = {
             ...metadata,
             id,
             downloadCount: 0
@@ -32,13 +32,15 @@ export class FileModel {
         return fileMetadata;
     }
 
-    static findById(id: string): FileMetadata | undefined {
+    static findById(id: string): IFileMetadata | undefined {
         return this.files.get(id);
     }
 
-    static updateDownload(id: string): FileMetadata | null {
+    static updateDownload(id: string): IFileMetadata | null {
         const file = this.files.get(id);
-        if (!file) return null;
+        if (!file) {
+            return null;
+        }
 
         file.expiresAt = new Date();
         file.expiresAt.setDate(file.expiresAt.getDate() + 30);
@@ -52,18 +54,20 @@ export class FileModel {
 
     static delete(id: string): boolean {
         const file = this.files.get(id);
-        if (!file) return false;
+        if (!file) {
+            return false;
+        }
 
         this.files.delete(id);
         this.saveMetadata();
         return true;
     }
 
-    static getAll(): FileMetadata[] {
+    static getAll(): IFileMetadata[] {
         return Array.from(this.files.values());
     }
 
-    static getExpiredFiles(): FileMetadata[] {
+    static getExpiredFiles(): IFileMetadata[] {
         const thirtyDaysAgo = new Date();
         thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
 

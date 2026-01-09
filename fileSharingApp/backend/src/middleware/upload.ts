@@ -1,4 +1,4 @@
-import multer from 'multer';
+import multer, {FileFilterCallback} from 'multer';
 import { v4 as uuidv4 } from 'uuid';
 import path from 'path';
 import fs from 'fs-extra';
@@ -17,7 +17,7 @@ const storage = multer.diskStorage({
     }
 });
 
-const fileFilter = (req: any, file: Express.Multer.File, cb: multer.FileFilterCallback) => {
+const fileFilter = (req: any, file: Express.Multer.File, cb: FileFilterCallback): void => {
     cb(null, true);
 };
 
