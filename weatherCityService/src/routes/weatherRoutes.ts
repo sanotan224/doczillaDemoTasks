@@ -16,7 +16,6 @@ export class WeatherRoutes {
     }
 
     private initializeRoutes(): void {
-        this.router.get('/data', this.weatherController.getWeather);
-        this.router.get('/chart', this.weatherController.getWeatherChart);
+        this.router.get('/', this.weatherController.getWeatherChart.bind(this.weatherController));
     }
 }

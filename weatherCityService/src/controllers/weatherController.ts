@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import { WeatherService } from '../services/weatherService';
 import { ChartGenerator } from '../utils/chartGenerator';
-import {IWeatherLocationData} from "../types/weatherCityData";
 
 export class WeatherController {
     private weatherService: WeatherService;
@@ -10,32 +9,17 @@ export class WeatherController {
     constructor() {
         this.weatherService = new WeatherService();
         this.chartGenerator = new ChartGenerator();
-
-        this.getWeather = this.getWeather.bind(this);
-        this.getWeatherChart = this.getWeatherChart.bind(this);
-        this.getWeatherData = this.getWeatherData.bind(this);
     }
 
-    public getWeather = async(req: Request, res: Response): Promise<void> => {
+    public async getWeatherChart(req: Request, res: Response): Promise<void> {
         try {
-            const weatherData = await this.getWeatherData(req.query?.city as string);
-
-            res.json({
-                city: weatherData.locationName,
-                forecast: weatherData.forecast,
-            });
-
-        } catch (error: any) {
-            console.error('Error fetching weather:', error);
-            res.status(500).json({
-                error: error.message || 'Failed to fetch weather data'
-            });
-        }
-    }
-
-    public getWeatherChart = async(req: Request, res: Response): Promise<void> => {
-        try {
-            const weatherData = await this.getWeatherData(req.query?.city as string);
+            const city = req.query.city as string;
+            if (!city) {
+                res.status(401).json({
+                    error: 'City parameter is not provided'
+                });
+            }
+            const weatherData = await this.weatherService.getCurrentWeather(city);
 
             const lastDayForecast =  weatherData.forecast.slice(0, 24);
 
@@ -54,12 +38,5 @@ export class WeatherController {
                 error: error.message || 'Failed to generate chart'
             });
         }
-    }
-
-    private readonly getWeatherData = async(city: string): Promise<IWeatherLocationData> => {
-        if (!city) {
-            throw new Error('City parameter is not provided');
-        }
-        return await this.weatherService.getCurrentWeather(city);
     }
 }
