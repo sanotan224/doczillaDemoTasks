@@ -20,7 +20,7 @@ export class FileRoutes {
     }
 
     private initializeRoutes(): void {
-        this.router.post('/upload', this.auth.authenticate, upload.single('file'), this.fileController.uploadFile);
-        this.router.get('/download/:id', this.fileController.downloadFile);
+        this.router.post('/upload', this.auth.authenticate, upload.single('file'), this.fileController.uploadFile.bind(this.fileController));
+        this.router.get('/download/:id', this.fileController.downloadFile.bind(this.fileController));
     }
 }

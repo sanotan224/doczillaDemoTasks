@@ -1,23 +1,8 @@
 import { v4 as uuidv4 } from 'uuid';
-import path from 'path';
-import fs from 'fs-extra';
 import {IFileMetadata} from "../models/fileMetadata";
 
 export class FileStorageService {
     private static files: Map<string, IFileMetadata> = new Map();
-    private static uploadsDir = path.join(__dirname, '../../uploads/')
-    private static metadataPath = this.uploadsDir + 'metadata.json';
-
-    static async saveMetadata(): Promise<void> {
-        try {
-            await fs.ensureDir(this.uploadsDir);
-            await fs.chmod(this.uploadsDir, 0o755);
-            await fs.ensureDir(path.dirname(this.metadataPath));
-            await fs.writeJson(this.metadataPath, Object.fromEntries(this.files));
-        } catch (error) {
-            console.error('Error saving metadata:', error);
-        }
-    }
 
     static create(metadata: Omit<IFileMetadata, 'id' | 'downloadCount'>): IFileMetadata {
         const id = uuidv4();
@@ -28,7 +13,6 @@ export class FileStorageService {
         };
 
         this.files.set(id, fileMetadata);
-        this.saveMetadata();
         return fileMetadata;
     }
 
@@ -47,7 +31,6 @@ export class FileStorageService {
 
         file.downloadCount += 1;
         this.files.set(id, file);
-        this.saveMetadata();
 
         return file;
     }
@@ -59,7 +42,6 @@ export class FileStorageService {
         }
 
         this.files.delete(id);
-        this.saveMetadata();
         return true;
     }
 

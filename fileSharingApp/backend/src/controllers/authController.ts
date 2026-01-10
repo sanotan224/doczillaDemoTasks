@@ -8,11 +8,9 @@ export class AuthController {
 
     constructor() {
         this.users = new Map<string, IUserModel>();
-        this.register = this.register.bind(this);
-        this.login = this.login.bind(this);
     }
 
-    public register = async (req: Request, res: Response) => {
+    public async register (req: Request, res: Response) {
         try {
             const {username, password} = req.body;
             if (!username || !password) {
@@ -49,7 +47,7 @@ export class AuthController {
         }
     };
 
-    public login = async (req: Request, res: Response)=> {
+    public async login(req: Request, res: Response) {
         try {
             const {username, password} = req.body;
 

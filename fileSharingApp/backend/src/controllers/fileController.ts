@@ -5,11 +5,9 @@ import {FileStorageService} from '../services/fileStorageService';
 export class FileController {
 
     constructor() {
-        this.uploadFile = this.uploadFile.bind(this);
-        this.downloadFile = this.downloadFile.bind(this);
     }
 
-    public uploadFile = async (req: Request, res: Response)=> {
+    public async uploadFile(req: Request, res: Response) {
         try {
             if (!req.file) {
                 return res.status(400).json({error: 'No file uploaded'});
@@ -46,7 +44,7 @@ export class FileController {
         }
     };
 
-    public downloadFile = async (req: Request, res: Response) => {
+    public async downloadFile(req: Request, res: Response) {
         try {
             const fileId = req.params.id;
             const fileMetadata = FileStorageService.findById(fileId);

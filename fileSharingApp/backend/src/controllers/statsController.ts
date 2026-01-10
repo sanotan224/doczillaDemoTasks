@@ -4,10 +4,9 @@ import {FileStorageService} from "../services/fileStorageService";
 export class StatsController {
 
     constructor() {
-        this.getStats = this.getStats.bind(this);
     }
 
-    public getStats = async(req: Request, res: Response) => {
+    public async getStats(req: Request, res: Response) {
         try {
             const files = FileStorageService.getAll();
             const userFiles = files.filter(file => file.uploaderId === req.userId);

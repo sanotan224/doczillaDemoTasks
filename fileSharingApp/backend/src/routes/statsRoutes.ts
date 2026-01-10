@@ -2,7 +2,7 @@ import { Router } from 'express';
 import {StatsController} from "../controllers/statsController";
 import {MiddlewareAuth} from "../middleware/auth";
 
-export class StatsRoute {
+export class StatsRoutes {
     private readonly router: Router;
     private statsController: StatsController;
     private auth: MiddlewareAuth;
@@ -19,6 +19,6 @@ export class StatsRoute {
     }
 
     private initializeRoutes(): void {
-        this.router.get('/overall', this.auth.authenticate, this.statsController.getStats);
+        this.router.get('/overall', this.auth.authenticate, this.statsController.getStats.bind(this.statsController));
     }
 }

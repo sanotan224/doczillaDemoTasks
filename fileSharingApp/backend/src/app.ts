@@ -1,7 +1,7 @@
 import express, {Application} from 'express';
 import cors from 'cors';
 import {FileRoutes} from './routes/fileRoutes';
-import {StatsRoute} from './routes/statsRoutes';
+import {StatsRoutes} from './routes/statsRoutes';
 import {AuthRoutes} from "./routes/authRoutes";
 import {CleanupService} from './services/cleanupService';
 
@@ -27,7 +27,7 @@ export class App {
     private initializeRoutes(): void {
         this.app.use('/api/auth', new AuthRoutes().getRouter());
         this.app.use('/api/files', new FileRoutes().getRouter());
-        this.app.use('/api/stats', new StatsRoute().getRouter());
+        this.app.use('/api/stats', new StatsRoutes().getRouter());
     }
 
     public async start(): Promise<void> {
