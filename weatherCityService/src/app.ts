@@ -20,7 +20,7 @@ export class App {
     }
 
     private initializeRoutes(): void {
-        this.app.use('/api/weather', new WeatherRoutes().getRouter());
+        this.app.use('/weather', new WeatherRoutes().getRouter());
     }
 
     public async start(): Promise<void> {
